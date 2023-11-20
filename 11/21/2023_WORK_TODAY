@@ -1,0 +1,80 @@
+F200413
+Todays Objective
+
+# Goals & Objectives
+The primary goals and objectives of the project are:
+- 	To provide an easy start-up/set-up for scalable test execution.
+- 	To provide a cloud-based/hosted platform.
+- 	To provide an ability to run on multiple platforms (Cross-web testing).
+- 	To provide the ability to run multiple tests in parallel.
+- 	To make it affordable
+
+
+## Getting Started
+
+To get started with the WEBTESTHUB follow these steps:
+
+1. **Prerequisites**: Ensure you have the following components installed:
+   - Node.js
+   - Next.js
+   - Docker Desktop
+   - GraphQL
+   - GoLang
+   - Psql Cli (for Accessing GraphQL DB in Cmd line)
+
+2. **Clone the Repository**: Clone this GitLab repository to your local machine.
+
+3. **Install Dependencies**: Navigate to the project directory and install the required dependencies by running:
+   ```
+   npm install
+   ```
+
+4. **Configure the Platform**: Open the configuration file `config.js` and customize the settings according to your requirements. Specify the browsers, devices, and test environment details in this file.
+
+5. **Run FE**: Start the Front End by running the following command:
+   ```
+   cd app/frontend
+   npm run dev  
+   ```
+    It will run on http://localhost:3000
+
+6. **Run Api Gateway**: Start the Appolo Server by running the following command:
+   ```
+   cd app/Backend/api_gateway
+   npm start
+   ```
+    It will run on http://localhost:4000
+
+7. **Run BE Test Executor**: Start the Test Executor Microservice by running the following command:
+   ```
+   cd app/Backend/test_executor
+   go run server.go
+   ```
+    It will run on http://localhost:8181
+
+    NOTE: If you make any changes in GraphQl schema run the following Command: `go run github.com/99designs/gqlgen`
+
+8. **Run BE Settings**: Start the Seetings Microservice by running the following command:
+   ```
+   cd app/Backend/Settings
+   go run server.go
+   ```
+    It will run on http://localhost:9090
+    
+    NOTE: If you make any changes in GraphQl schema run the following Command: `go run github.com/99designs/gqlgen`
+
+9. **Start Docker**: Start the Docker Desktop.
+
+10. **Trigger Test Execution**: Execute the tests by following the procedure:
+   ```
+1- Goto http://localhost:3000
+2- Click Start Test.
+3- Open CloneRepository and Enter to be tested project details and press save.
+4- Now enter your github project repository and press Add Repository.
+5- Now open customize Settings from sidebar and Configure your own settings or use default.
+6- Now open Write DockerFile and write docker script for your project test cases.
+7- Click on Start Test button in StartTest page.
+8- Results of the test cases will be displayed in the results page.
+9- Videos, Logs and Screenshots will be displayed in their respected pages.
+10- End the Session be Clicking on EndSession Button.
+
