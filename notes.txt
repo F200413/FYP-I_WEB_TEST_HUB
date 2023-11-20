@@ -1,0 +1,53 @@
+Key Components
+
+Go Language: Go serves are used as the primary programming language for developing the testing infrastructure. It provides efficient framework for building automated test cases and managing test execution.
+
+
+
+The code defines a test function called TestIDs() that verifies the values of various IDs used in a project.
+The IDs are used for informational messages, node labels, error validation, and system errors.
+The tests ensure that the IDs are assigned the correct values.
+
+
+React Native: React Native is used to build the frontend that will be tested. port 30001 is being used 
+Docker: Docker containers encapsulate the testing environment ensuring that each test instance operates in a consistent and isolated environment. This helps to prevent conflicts and ensure accurate test results.
+
+DOCKER:
+Stage 1: deps
+
+
+Sets the working directory to /app
+Copies package.json and package-lock.json to the working directory
+Installs Node.js dependencies using npm install
+
+Stage 2: dev
+
+
+Sets the PORT environment variable to 3000
+Exposes port 3000
+Runs the npm run dev command to start the development server
+
+Stage 3: builder
+
+
+Sets the working directory to /app
+Copies node_modules from the deps stage to the builder stage
+Copies all other files to the builder stage
+Runs npm build to build the Next.js application
+
+Stage 4: runner
+
+Sets the working directory to /app
+Copies public directory and package.json from the builder stage
+Exposes port 3000
+Runs the node server.js command to start the production server
+
+Automated Testing Flow
+
+Test Case Preparation: Test cases are written in python. These test cases define the scenarios s for evaluating the application's behavior.
+
+Containerization: Each test case is packaged into a Docker container, ensuring that the test environment is consistent and repeatable. This eliminates the need to manually set up and configure testing environments for each test case.
+
+Test Execution: A test runner is used to execute the test cases in parallel across multiple containers.
+
+Result The test runner collects the results from all test executions and aggregates them into a centralized location. 
