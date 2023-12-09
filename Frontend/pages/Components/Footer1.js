@@ -36,7 +36,9 @@ function Footer() {
                                 <h4>Get help</h4>
                                 <ul>
                                 <li><Link to="/ContactUs" >Contact Us</Link></li>
-                                <li><Link to="/ContactUs" >About Us</Link></li>                                
+                                <li><Link to="/ContactUs" >About Us</Link></li>  
+                                <li><Link to="/about us" >Contact Us</Link></li>
+                                <li><Link to="/ContactUs" >About Us</Link></li>                                  
                                 </ul>
                             </div>
                             <div className={styles.fCol}>
