@@ -20,6 +20,7 @@ function Footer() {
                                 <li><Link to="/CustomizeSettings" >Configure Settings</Link></li>
                                 <li><Link to="/CreateDockerFile" >Write Docker File</Link></li>
                                 <li><Link to="/RunTest" >start test</Link></li>
+                                <li><Link to="/RunTest" >start test</Link></li>
                                </ul>
                             </div>
                             <div className={styles.fCol}>
