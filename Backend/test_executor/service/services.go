@@ -243,6 +243,18 @@ func InitiateTest(ctx context.Context, ID int, GitEmail string, GitProjectName s
 		log.Println(err)
 	}
 
+	// Run Selenium Container for edge
+
+	fmt.Println("3) -------Running Selenium_Container for edge-------")
+	image_s_foredge := "selenium/standalone-edge"
+	containername_sforedge := "Selenium_Container"
+	portopeningforedge := "4444"
+	inputEnv1foredge := []string{fmt.Sprintf("LISTENINGPORT=%s", portopening)}
+	err = f.RunContainerSelenium(client, image_s_foredge, containername_sforedge, portopeningforedge, inputEnv1foredge)
+	if err != nil {
+		log.Println(err)
+	}
+
 	// Build Docker Image from dockerfile-contents
 
 	for i := 1; i < nooftestcases+1; i++ {
