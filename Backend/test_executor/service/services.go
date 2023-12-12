@@ -13,6 +13,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 	"test_executor/configdb"
 	"test_executor/graph/model"
 	"time"
@@ -337,6 +338,93 @@ func InitiateTest(ctx context.Context, ID int, GitEmail string, GitProjectName s
 	}
 
 	fmt.Println("**** Before **** making the call for the container to Stop")
+
+	fmt.Println("** Before ** making the call for the container to Stop")
+
+	//New for Wg for Parallel container
+
+	for i := 1; i < nooftestcases+1; i++ {
+
+		fmt.Println("p3-task) -------Run " + language + " Test Container from " + strings.ToLower(language) + "-test-image-" + strconv.Itoa(i) + "-------")
+
+		ImageName := strings.ToLower(language) + "-" + "test" + "-" + "image" + "-" + strconv.Itoa(i)
+		ContainerName := strings.ToLower(language) + "-" + "test" + "-" + "container" + "-" + strconv.Itoa(i)
+
+		Containerport := "8080"
+		string_c, _ := strconv.Atoi(Containerport)
+		Containerport = strconv.Itoa(string_c + i)
+
+		inputEnvImage := []string{fmt.Sprintf("LISTENINGPORT=%s", Containerport)}
+
+		containerID := "Project_" + strconv.Itoa(i) + "_Fluentd"
+		var wg sync.WaitGroup
+
+		inspect, err := client.ContainerInspect(context.Background(), containerID)
+		if err != nil {
+			panic(err)
+		}
+
+		ipAddress := inspect.NetworkSettings.Networks["bridge"].IPAddress
+		fmt.Println("Container IP address:", ipAddress)
+
+		start_time[i-1] = time.Now()
+		err = f.RunContainerForProjectTestImageForParralel(client, ImageName, ContainerName, Containerport, inputEnvImage, ipAddress, strconv.Itoa(i), baseDir, basePath, &wg)
+
+		if err != nil {
+			log.Println(err)
+		}
+
+	}
+
+	type ContainerInfo struct {
+		ImageName      string
+		ContainerName  string
+		Port           string
+		InputEnv       []string
+		ContainerIP    string
+		ContainerIndex string
+		BaseDir        string
+		BasePath       string
+		// Add more fields as needed
+	}
+
+	// Example list of container information
+	containerInfoList := make([]ContainerInfo, 0)
+
+	for i := 1; i <= nooftestcases; i++ {
+		ImageName := fmt.Sprintf("%s-%s-image-%d", strings.ToLower(language), "test", i)
+		ContainerName := fmt.Sprintf("%s-%s-container-%d", strings.ToLower(language), "test", i)
+		Containerport := strconv.Itoa(8080 + i)
+		inputEnvImage := []string{fmt.Sprintf("LISTENINGPORT=%s", Containerport)}
+
+		containerID := fmt.Sprintf("Project_%d_Fluentd", i)
+
+		inspect, err := client.ContainerInspect(context.Background(), containerID)
+		if err != nil {
+			panic(err)
+		}
+
+		ipAddress := inspect.NetworkSettings.Networks["bridge"].IPAddress
+
+		containerInfo := ContainerInfo{
+			ImageName:      ImageName,
+			ContainerName:  ContainerName,
+			Port:           Containerport,
+			InputEnv:       inputEnvImage,
+			ContainerIP:    ipAddress,
+			ContainerIndex: strconv.Itoa(i),
+			BaseDir:        baseDir,
+			BasePath:       basePath,
+		}
+
+		containerInfoList = append(containerInfoList, containerInfo)
+
+		fmt.Printf("p3-task) -------Run %s Test Container from %s-test-image-%d-------\n", language, strings.ToLower(language), i)
+		start_time[i-1] = time.Now()
+	}
+
+	// Run existing containers concurrently
+	err = f.RunContainerConcurrently(client, containerInfoList)
 
 	// Stops Video Container
 
