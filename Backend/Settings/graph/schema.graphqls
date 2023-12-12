@@ -1,0 +1,45 @@
+type Settings {
+  id: ID!
+  browser: String!
+  version: String!
+  stepByStepDebugging: Boolean!
+  enableLogs: Boolean!
+  parallelism: Boolean!
+}
+
+type Projectinfos {
+  id: ID!
+  gitEmail: String!
+  gitProjectName: String!
+  gitLanguage: String!
+  gitNoOfTestCases: Int!
+  gitTestCaseFileName: String!
+}
+
+type Query {
+  settings: [Settings!]! #list of tests, if there no tests return null
+  setting(id: ID!): Settings!
+  projectInfos: [Projectinfos!]!
+  projectInfo(id: ID!): Projectinfos!
+}
+
+type Mutation {
+  setSettings(input: getSettingInput!): Settings!
+  setProjectInfo(input: projectInfoInput!): Projectinfos!
+}
+
+input getSettingInput {
+  browser: String!
+  version: String!
+  stepByStepDebugging: Boolean!
+  enableLogs: Boolean!
+  parallelism: Boolean!
+}
+
+input projectInfoInput {
+  gitEmail: String!
+  gitProjectName: String!
+  gitLanguage: String!
+  gitNoOfTestCases: Int!
+  gitTestCaseFileName: String!
+}
