@@ -126,4 +126,85 @@ const resolvers = {
       console.log(query);
       console.log(data);
       return data.cloneGitRepository;
-    },
+    },initiateTest: async (parent, args) => {
+        const repInput = args.input;
+        console.log("hi", repInput);
+        const query = gql`
+          mutation InitiateTest {
+            initiateTest
+          }
+        `;
+  
+        const data = await testExecutionClient.request(query);
+        console.log(query);
+        console.log(data);      
+        return data.initiateTest;
+      },
+  
+      destroyAll: async (parent, args) => {
+        const repInput = args.input;
+        console.log("hi", repInput);
+        const query = gql`
+          mutation DestroyAll {
+            destroyAll
+          }
+        `;
+        const data = await testExecutionClient.request(query);
+        console.log(query);
+        console.log(data);
+        return data.destroyAll;
+      },
+  
+      createDockerFile: async (parent, args) => {
+        const repInput = args.input;
+        console.log("hi", repInput);
+        const query = gql`
+          mutation CreateDockerFile($input: createDockerFileInput!) {
+            createDockerFile(input: $input)
+          }
+        `;
+        const data = await testExecutionClient.request(query, { input: repInput });
+        console.log(query);
+        console.log(data);
+        return data.createDockerFile;
+      },
+    
+      seleniumPull: async (parent, args) => {
+        const selInput = args.input;
+        console.log(selInput);
+        const query = gql`
+          mutation SeleniumPull($input: String!) {
+            seleniumPull(input: $input) {
+            }
+          }
+        `;
+        const data = await testExecutionClient.request(query, { input: selInput });
+        return data.seleniumPull;
+      },
+      seleniumStart: async (parent, args) => {
+        const selInput = args.input;
+        console.log(selInput);
+        const query = gql`
+          mutation SeleniumStart($input: seleniumInput!) {
+            seleniumStart(input: $input) {
+            }
+          }
+        `;
+        const data = await testExecutionClient.request(query, { input: selInput });
+        return data.seleniumStart;
+      },
+      seleniumStop: async (parent, args) => {
+        const selInput = args.input;
+        console.log(selInput);
+        const query = gql`
+          mutation seleniumStop($input: seleniumInput!) {
+            seleniumStop(input: $input) {
+            }
+          }
+        `;
+        const data = await testExecutionClient.request(query, { input: selInput });
+        return data.seleniumStop;
+      }
+    }
+  };
+  module.exports = { resolvers };
